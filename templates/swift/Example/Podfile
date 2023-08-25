@@ -1,0 +1,46 @@
+use_frameworks!
+
+platform :ios, '10.0'
+
+target '${POD_NAME}_Example' do
+  pod '${POD_NAME}', :path => '../'
+
+  pod 'SwiftFormat/CLI'    ,"0.50.1"
+  pod 'SwiftLint'          ,'0.51.0'
+  
+  target '${POD_NAME}_Tests' do
+    inherit! :search_paths
+
+    ${INCLUDED_PODS}
+  end
+end
+## 检查是否安装插件
+pre_install do |installer|
+  # 插件路径
+  sandbox_root = Pathname(installer.sandbox.root)
+  ycroot = File.expand_path("../../", sandbox_root)
+  # lint-staged
+  node_module_lint_stage = File.expand_path("node_modules/lint-staged/",ycroot)
+  has_lint_stage = File.exist?(node_module_lint_stage)
+  # husky
+  node_module_husky = File.expand_path("node_modules/husky",ycroot)
+  has_husky = File.exist?(node_module_husky)
+  # commitizen
+  node_module_commitizen = File.expand_path("node_modules/commitizen",ycroot)
+  has_commitizen = File.exist?(node_module_commitizen)
+  # cz-conventional-changelog
+  node_module_changelog = File.expand_path("node_modules/cz-conventional-changelog",ycroot)
+  has_changelog = File.exist?(node_module_changelog)
+  # cz-customizable
+  node_module_customizable = File.expand_path("node_modules/cz-customizable",ycroot)
+  has_customizable = File.exist?(node_module_customizable)
+  # commitlint
+  node_module_commitlint = File.expand_path("node_modules/@commitlint",ycroot)
+  has_commitlint = File.exist?(node_module_commitlint)
+  
+  if has_husky && has_lint_stage && has_commitizen && node_module_changelog && has_customizable && has_commitlint
+    Pod::UI.puts "lint staged，husky，commitizen，cz-conventional-changelog，cz-customizable，commitlint 已安装"
+  else
+    raise "warning error： lint staged，husky，commitizen，cz-conventional-changelog，cz-customizable，commitlint不存在，请使用以下命令安装: npm install --save-dev lint-staged; npm install husky --save-dev; npx husky install; npm install commitizen cz-conventional-changelog -D; npm i @commitlint/config-conventional @commitlint/cli -D; npm install cz-customizable -D;"
+  end
+end
