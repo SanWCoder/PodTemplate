@@ -29,15 +29,33 @@ TODO: Add long description of the pod here.
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '10.0'
-
+  
+  # 是否支持ARC
+  # s.requires_arc = true
+  # 是否是静态库
+  # s.static_framework = true
+  
   s.source_files = '${POD_NAME}/Classes/**/*'
+  
+  # 子模块
+  # s.subspec 'subspec' do |ss|
+  #   ss.source_files = '${POD_NAME}/Classes/subspec/*'
+  # end
   
   # s.resource_bundles = {
   #   '${POD_NAME}' => ['${POD_NAME}/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
+  
   # s.frameworks = 'UIKit', 'MapKit'
+  # 自己制作的framework
+  # s.vendored_frameworks = 'HCYUIKit'
+  # 引用的静态库,多个用逗号隔开,需要省略 lib 及 .tbd
+  # s.libraries = 'c++'
+  # 自己制作的.a
+  # s.vendored_libraries = 'HCYCore'
+  
   # s.dependency 'AFNetworking', '~> 2.3'
-  s.dependency 'SwiftLint'          ,'0.51.0'
+  
 end
