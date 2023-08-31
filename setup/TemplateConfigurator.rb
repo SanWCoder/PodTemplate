@@ -107,45 +107,48 @@ module Pod
 
     def run_pod_install
       
-      puts "\nRunning " + "npm install" + " on your new library."
-      puts ""
+        puts "\nRunning " + "npm install" + " on your new library."
+        puts ""
       
-      # 1.add package.json
-      system "touch package.json"
-      system "echo '{\n  \"name\": \"lint\",\n  \"version\": \"1.0.0\",\n  \"private\": true,\n  \"devDependencies\": {\n\n  },\n  \"lint-staged\": {\n    \"*.swift\": [\n      \"Example/Pods/SwiftLint/swiftlint lint\"\n    ]\n  },\n  \"scripts\": {\n    \"commit\": \"git-cz\"\n  },\n  \"config\": {\n    \"commitizen\": {\n      \"path\": \"node_modules/cz-customizable\"\n    },\n    \"cz-customizable\": {\n      \"config\": \"cz-config.js\"\n    }\n  }\n}' >> package.json"
-      
-      # 2.add SwiftLint
-      system "npm install --save-dev lint-staged"
-      system "npm install husky --save-dev"
-      system "npx husky install"
-      system "npx husky add .husky/pre-commit \"Example/Pods/SwiftFormat/CommandLineTool/swiftformat ../#{pod_name}\n\nnpx lint-staged\""
-      system "npm install commitizen cz-conventional-changelog -D"
-      system "npm i @commitlint/config-conventional @commitlint/cli -D"
-      system "npm install cz-customizable -D"
-      system "npx husky add .husky/commit-msg \"npx --no-install commitlint --edit $1\""
-      
-      # 3.add .swiftlint.yml
-      system "touch Example/.swiftlint.yml"
-      system "echo 'included:                                       # 执行lint包含的路径\n#    - Example/Folder                            # 指定目录\n#    - Example/Folder/AppDelegate.swift         # 指定文件\n    - ../#{pod_name}/Classes                 # 指定lint需包含../#{pod_name}/Classes目录\n\nexcluded:                                       # 执行lint忽略的路径，优先级高于 `included`\n    - Pods                                      # 忽略Pods\n\nline_length:                                    # 单行代码长度,默认error 200\n    warning: 300 \n    error: 350\n\nfunction_parameter_count:                       # 函数参数个数\n    warning: 5\n    error: 7' >> Example/.swiftlint.yml"
-      
-      # 4.add .swiftformat
-      system "touch Example/.swiftformat"
-      system "echo '--allman false \n--assetliterals visual-width\n--beforemarks\n--binarygrouping none\n--categorymark \"MARK: %c\"\n--classthreshold 0\n--closingparen balanced\n--commas always\n--conflictmarkers reject\n--decimalgrouping none\n--elseposition same-line\n--enumthreshold 0\n--exponentcase lowercase\n--exponentgrouping disabled\n--extensionacl on-extension\n--extensionlength 0\n--extensionmark \"MARK: - %t + %c\"\n--fractiongrouping disabled\n--fragment false\n--funcattributes preserve\n--groupedextension \"MARK: %c\"\n--guardelse auto\n--header ignore\n--hexgrouping 4,8\n--hexliteralcase uppercase\n--ifdef indent\n--importgrouping alphabetized\n--indent 4\n--indentcase false\n--lifecycle\n--linebreaks lf\n--markextensions always\n--marktypes always\n--maxwidth none\n--modifierorder\n--nevertrailing\n--nospaceoperators ...,..<\n--nowrapoperators\n--octalgrouping none\n--operatorfunc spaced\n--organizetypes class,enum,struct\n--patternlet hoist\n--ranges spaced\n--redundanttype inferred\n--self remove\n--selfrequired\n--semicolons inline\n--shortoptionals always\n--smarttabs enabled\n--stripunusedargs closure-only\n--structthreshold 0\n--tabwidth unspecified\n--trailingclosures\n--trimwhitespace always\n--typeattributes preserve\n--typemark \"MARK: - %t\"\n--varattributes preserve\n--voidtype void\n--wraparguments preserve\n--wrapcollections preserve\n--wrapconditions preserve\n--wrapparameters preserve\n--wrapreturntype preserve\n--xcodeindentation disabled\n--yodaswap always' >> Example/.swiftformat"
-      
-      # 5.add commitlint.config.js
-      system "touch commitlint.config.js"
-      system "echo 'module.exports = {\n  extends: [\"@commitlint/config-conventional\"]\n}' >> commitlint.config.js"
+        # 1.add package.json
+        system "touch package.json"
+        system "echo '{\n  \"name\": \"lint\",\n  \"version\": \"1.0.0\",\n  \"private\": true,\n  \"devDependencies\": {\n\n  },\n  \"lint-staged\": {\n    \"*.swift\": [\n      \"Example/Pods/SwiftLint/swiftlint lint\"\n    ]\n  },\n  \"scripts\": {\n    \"commit\": \"git-cz\"\n  },\n  \"config\": {\n    \"commitizen\": {\n      \"path\": \"node_modules/cz-customizable\"\n    },\n    \"cz-customizable\": {\n      \"config\": \"cz-config.js\"\n    }\n  }\n}' >> package.json"
+        
+        # 2.add SwiftLint
+        system "npm install --save-dev lint-staged"
+        system "npm install husky --save-dev"
+        system "npx husky install"
+        system "npx husky add .husky/pre-commit \"Example/Pods/SwiftFormat/CommandLineTool/swiftformat ./#{pod_name}\n\nnpx lint-staged\""
+        system "npm install commitizen cz-conventional-changelog -D"
+        system "npm i @commitlint/config-conventional @commitlint/cli -D"
+        system "npm install cz-customizable -D"
+        system "npx husky add .husky/commit-msg \"npx --no-install commitlint --edit $1\""
+        
+        # 3.add .swiftlint.yml
+        system "touch Example/.swiftlint.yml"
+        system "echo 'included:                                       # 执行lint包含的路径\n#    - Example/Folder                            # 指定目录\n#    - Example/Folder/AppDelegate.swift         # 指定文件\n    - ../#{pod_name}/Classes                 # 指定lint需包含../HCYBaseCore/Classes目录\n\nexcluded:                                       # 执行lint忽略的路径，优先级高于 `included`\n    - Pods                                      # 忽略Pods\n\n#disabled_rules:                                 # 执行时排除掉的规则\n#    - identifier_name                           # 驼峰命名检查,between 3 and 40\n#    - trailing_whitespace                       # 空行不能有空格\n\n#force_try: warning                              # 避免使用强制try\n\n#force_cast: warning                             # 直接强解类型 eg: NSNumber() as! Int\n\n#type_name: warning                              # 类型名称违规 eg：类型首字母需大写\n\n#shorthand_operator: warning                     # 推荐使用简短操作符 eg：+= ， -=， *=， /=\n\nfunction_parameter_count:                       # 函数参数个数\n    warning: 5\n    error: 10\n\nfunction_body_length:                           # 函数体长度 40lines - 100lines\n    warning: 150\n    error: 200\n\ncyclomatic_complexity:                          # 代码复杂度,默认为10\n    warning: 40\n    error: 50\n\nlarge_tuple:                                     # 元组成员个数:2\n    warning: 5\n    error: 7\n\nline_length:                                    # 单行代码长度,默认error 200\n    warning: 300\n    error: 350\n\n#file_length:                                    # 文件长度 \n#    warning: 500\n#    error: 1200\n' >> Example/.swiftlint.yml"
+        
+        system "touch .swiftlint.yml"
+        system "echo 'included:                                       # 执行lint包含的路径\n#    - Example/Folder                            # 指定目录\n#    - Example/Folder/AppDelegate.swift         # 指定文件\n    - ../#{pod_name}/Classes                 # 指定lint需包含../HCYBaseCore/Classes目录\n\nexcluded:                                       # 执行lint忽略的路径，优先级高于 `included`\n    - Pods                                      # 忽略Pods\n\n#disabled_rules:                                 # 执行时排除掉的规则\n#    - identifier_name                           # 驼峰命名检查,between 3 and 40\n#    - trailing_whitespace                       # 空行不能有空格\n\n#force_try: warning                              # 避免使用强制try\n\n#force_cast: warning                             # 直接强解类型 eg: NSNumber() as! Int\n\n#type_name: warning                              # 类型名称违规 eg：类型首字母需大写\n\n#shorthand_operator: warning                     # 推荐使用简短操作符 eg：+= ， -=， *=， /=\n\nfunction_parameter_count:                       # 函数参数个数\n    warning: 5\n    error: 10\n\nfunction_body_length:                           # 函数体长度 40lines - 100lines\n    warning: 150\n    error: 200\n\ncyclomatic_complexity:                          # 代码复杂度,默认为10\n    warning: 40\n    error: 50\n\nlarge_tuple:                                     # 元组成员个数:2\n    warning: 5\n    error: 7\n\nline_length:                                    # 单行代码长度,默认error 200\n    warning: 300\n    error: 350\n\n#file_length:                                    # 文件长度 \n#    warning: 500\n#    error: 1200\n' >> .swiftlint.yml"
+        
+        # 4.add .swiftformat
+        system "touch Example/.swiftformat"
+        system "echo '--allman false \n--assetliterals visual-width\n--beforemarks\n--binarygrouping none\n--categorymark \"MARK: %c\"\n--classthreshold 0\n--closingparen balanced\n--commas always\n--conflictmarkers reject\n--decimalgrouping none\n--elseposition same-line\n--enumthreshold 0\n--exponentcase lowercase\n--exponentgrouping disabled\n--extensionacl on-extension\n--extensionlength 0\n--extensionmark \"MARK: - %t + %c\"\n--fractiongrouping disabled\n--fragment false\n--funcattributes preserve\n--groupedextension \"MARK: %c\"\n--guardelse auto\n--header ignore\n--hexgrouping 4,8\n--hexliteralcase uppercase\n--ifdef indent\n--importgrouping alphabetized\n--indent 4\n--indentcase false\n--lifecycle\n--linebreaks lf\n--markextensions always\n--marktypes always\n--maxwidth none\n--modifierorder\n--nevertrailing\n--nospaceoperators ...,..<\n--nowrapoperators\n--octalgrouping none\n--operatorfunc spaced\n--organizetypes class,enum,struct\n--patternlet hoist\n--ranges spaced\n--redundanttype inferred\n--self remove\n--selfrequired\n--semicolons inline\n--shortoptionals always\n--smarttabs enabled\n--stripunusedargs closure-only\n--structthreshold 0\n--tabwidth unspecified\n--trailingclosures\n--trimwhitespace always\n--typeattributes preserve\n--typemark \"MARK: - %t\"\n--varattributes preserve\n--voidtype void\n--wraparguments preserve\n--wrapcollections preserve\n--wrapconditions preserve\n--wrapparameters preserve\n--wrapreturntype preserve\n--xcodeindentation disabled\n--yodaswap always' >> Example/.swiftformat"
+        
+        # 5.add commitlint.config.js
+        system "touch commitlint.config.js"
+        system "echo 'module.exports = {\n  extends: [\"@commitlint/config-conventional\"]\n}' >> commitlint.config.js"
 
-      # 6.add .cz-config.js
-      system "touch .cz-config.js"
-      system "echo 'module.exports = {\ntypes: [\n  { value: \"feat\", name: \"feat: 新增功能\" },\n  { value: \"fix\", name: \"fix: 修复 bug\" },\n  { value: \"docs\", name: \"docs: 文档变更\" },\n  { value: \"style\", name: \"style: 代码格式（不影响功能，例如空格、分号等格式修正）\" },\n  { value: \"refactor\", name: \"refactor: 代码重构（不包括 bug 修复、功能新增）\" },\n  { value: \"perf\", name: \"perf: 性能优化\" },\n  { value: \"test\", name: \"test: 添加、修改测试用例\" },\n  { value: \"build\", name: \"build: 构建流程、外部依赖变更（如升级 npm 包、修改 webpack 配置等）\" },\n  { value: \"ci\", name: \"ci: 修改 CI 配置、脚本\" },\n  { value: \"chore\", name: \"chore: 对构建过程或辅助工具和库的更改（不影响源文件、测试用例）\" },\n  { value: \"revert\", name: \"revert: 回滚 commit\" }\n],\nscopes: [\n  [\"components\", \"组件相关\"],\n  [\"hooks\", \"hook 相关\"],\n  [\"utils\", \"utils 相关\"],\n  [\"styles\", \"样式相关\"],\n  [\"deps\", \"项目依赖\"],\n  [\"auth\", \"对 auth 修改\"],\n  [\"other\", \"其他修改\"],\n  [\"custom\", \"以上都不是？我要自定义\"]\n].map(([value, description]) => {\n  return {\n    value,\n    name: `${value.padEnd(30)} (${description})`\n  }\n}),\nmessages: {\n  type: \"请选择提交类型(必填)\",\n  scope: \"选择一个 scope (可选)\",\n  customScope: \"请输入文件修改范围(可选)\",\n  subject: \"请简要描述提交(必填)\",\n  body:\"请输入详细描述(可选)\",\n  breaking: \"列出任何BREAKING CHANGES(破坏性修改)(可选)\",\n  footer: \"请输入要关闭的issue(可选)\",\n  confirmCommit: \"确认提交？\"\n},\nallowBreakingChanges: [\"feat\", \"fix\"],\nsubjectLimit: 100,\nbreaklineChar: \"|\"\n  }' >> .cz-config.js"
+        # 6.add .cz-config.js
+        system "touch .cz-config.js"
+        system "echo 'module.exports = {\ntypes: [\n  { value: \"feat\", name: \"feat: 新增功能\" },\n  { value: \"fix\", name: \"fix: 修复 bug\" },\n  { value: \"docs\", name: \"docs: 文档变更\" },\n  { value: \"style\", name: \"style: 代码格式（不影响功能，例如空格、分号等格式修正）\" },\n  { value: \"refactor\", name: \"refactor: 代码重构（不包括 bug 修复、功能新增）\" },\n  { value: \"perf\", name: \"perf: 性能优化\" },\n  { value: \"test\", name: \"test: 添加、修改测试用例\" },\n  { value: \"build\", name: \"build: 构建流程、外部依赖变更（如升级 npm 包、修改 webpack 配置等）\" },\n  { value: \"ci\", name: \"ci: 修改 CI 配置、脚本\" },\n  { value: \"chore\", name: \"chore: 对构建过程或辅助工具和库的更改（不影响源文件、测试用例）\" },\n  { value: \"revert\", name: \"revert: 回滚 commit\" }\n],\nscopes: [\n  [\"components\", \"组件相关\"],\n  [\"hooks\", \"hook 相关\"],\n  [\"utils\", \"utils 相关\"],\n  [\"styles\", \"样式相关\"],\n  [\"deps\", \"项目依赖\"],\n  [\"auth\", \"对 auth 修改\"],\n  [\"other\", \"其他修改\"],\n  [\"custom\", \"以上都不是？我要自定义\"]\n].map(([value, description]) => {\n  return {\n    value,\n    name: `${value.padEnd(30)} (${description})`\n  }\n}),\nmessages: {\n  type: \"请选择提交类型(必填)\",\n  scope: \"选择一个 scope (可选)\",\n  customScope: \"请输入文件修改范围(可选)\",\n  subject: \"请简要描述提交(必填)\",\n  body:\"请输入详细描述(可选)\",\n  breaking: \"列出任何BREAKING CHANGES(破坏性修改)(可选)\",\n  footer: \"请输入要关闭的issue(可选)\",\n  confirmCommit: \"确认提交？\"\n},\nallowBreakingChanges: [\"feat\", \"fix\"],\nsubjectLimit: 100,\nbreaklineChar: \"|\"\n  }' >> .cz-config.js"
+
+        puts "\nRunning " + "pod install".magenta + " on your new library."
+        puts ""
       
-      puts "\nRunning " + "pod install".magenta + " on your new library."
-      puts ""
-      
-      Dir.chdir("Example") do
-        system "pod install"
-      end
+        Dir.chdir("Example") do
+           system "pod install"
+        end
       
       `git add Example/#{pod_name}.xcodeproj/project.pbxproj`
       `git commit -m "Initial commit"`

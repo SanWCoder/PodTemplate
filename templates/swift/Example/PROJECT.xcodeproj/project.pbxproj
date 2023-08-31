@@ -255,7 +255,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# 1.Pod方式\n\"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"../$(PROJECT)\"\n# 2.local方式\n# if which swiftformat >/dev/null; then\n#   swiftformat .\n# else\n#   echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\n# fi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# 1.Pod方式\n\"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"../PROJECT\"\n# 2.local方式\n# if which swiftformat >/dev/null; then\n#   swiftformat .\n# else\n#   echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\n# fi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
