@@ -1,8 +1,8 @@
-# HCYPodTemplate
+# PodTemplate
 
 ## Description
 
-pod component for use swiftformat，swiftlint，husky，lint-staged and commitlint
+基于官方模版库https://github.com/CocoaPods/pod-template.git 改造的组件模版库，加入 swiftformat，swiftlint，husky，lint-staged and commitlint
 
 ## Use
 
@@ -165,7 +165,7 @@ TARGETS -> Build Phases -> + -> New Run Script Phase
 included:                                       # 执行lint包含的路径
 #    - Example/Folder                           # 指定目录
 #    - Example//Folder/AppDelegate.swift        # 指定文件
-    - ../HCYNetRequestKit/Classes               # 指定lint需包含../HCYNetRequestKit/Classes目录
+    - ../xxx/Classes               # 指定lint需包含../xxx/Classes目录
 
 excluded:                                       # 执行lint忽略的路径，优先级高于 `included`
     - Pods                                      # 忽略Pods
