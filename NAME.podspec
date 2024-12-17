@@ -28,7 +28,7 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/${USER_NAME}/${POD_NAME}.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '12.0'
   
   # 是否支持ARC
   # s.requires_arc = true
@@ -36,10 +36,13 @@ TODO: Add long description of the pod here.
   # s.static_framework = true
   
   s.source_files = '${POD_NAME}/Classes/**/*'
-  
+  # 默认子模块
+  # s.default_subspecs = 'subspec'
   # 子模块
   # s.subspec 'subspec' do |ss|
   #   ss.source_files = '${POD_NAME}/Classes/subspec/*'
+  #   依赖的当前库的子模块
+  #   ss.dependency '${POD_NAME}/subspec1'
   # end
   
   # s.resource_bundles = {
